@@ -16,8 +16,8 @@ class GetAllPlantsUseCase @Inject constructor(
      suspend operator fun invoke():Flow<Resource<List<PlantModel>>> = flow {
          try {
              emit(Resource.Loading())
-             val ediblePlantsList = repository.getEdiblePlants()
-             emit(Resource.Success(ediblePlantsList))
+             val PlantsList = repository.getAllPlants()
+             emit(Resource.Success(PlantsList))
          }catch (e:HttpException){
              emit(Resource.Error(e.message()))
          }catch (e:IOException){

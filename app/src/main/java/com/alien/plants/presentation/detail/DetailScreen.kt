@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
@@ -17,11 +18,9 @@ import coil.compose.AsyncImage
 import com.alien.plants.domain.model.PlantModel
 
 @Composable
-fun DetailScreen(plantModel: PlantModel) {
+fun DetailScreen(plantModel:PlantModel) {
 
     Box(modifier = Modifier.fillMaxSize()) {
-
-
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
                 AsyncImage(
@@ -47,9 +46,6 @@ fun DetailScreen(plantModel: PlantModel) {
                 Text(text = plantModel.bibliography.toString(),
                     style = MaterialTheme.typography.bodyMedium
                     )
-
-
-
 
             }
 

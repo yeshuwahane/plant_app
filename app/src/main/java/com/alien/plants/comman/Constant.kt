@@ -6,4 +6,6 @@ object Constant {
 
     const val BASE_URL = "https://trefle.io/api/"
 
+    const val PLANT_ID_FOR_ACTIVITY:Int = 221
+
 }

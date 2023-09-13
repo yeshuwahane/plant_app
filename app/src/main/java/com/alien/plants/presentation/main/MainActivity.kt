@@ -2,6 +2,7 @@ package com.alien.plants.presentation.main
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -59,6 +60,8 @@ class MainActivity : ComponentActivity() {
             )
         )
 
+
+
         setContent {
             PlantsTheme {
                 // A surface container using the 'background' color from the theme
@@ -110,9 +113,12 @@ class MainActivity : ComponentActivity() {
                                 contentAlignment = Alignment.Center
                             ) {
                                 if (index == 0){
-                                    MyGardenScreen()
+                                    MyGardenScreen(mainViewModel = mainViewModel,this@MainActivity)
+                                    mainViewModel.getMyGarden()
+
                                 }else{
                                     AllPlantScreen(mainViewModel = mainViewModel,this@MainActivity)
+
                                 }
                             }
                         }
@@ -131,6 +137,10 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             mainViewModel.getEdiblePlants()
             Log.d("alien", "list: ${mainViewModel.ediblePlantState.value.listIterator()}")
+            mainViewModel.getMyGarden()
+            val myGardenList = mainViewModel.myGardenState.value
+
+
         }
     }
 }

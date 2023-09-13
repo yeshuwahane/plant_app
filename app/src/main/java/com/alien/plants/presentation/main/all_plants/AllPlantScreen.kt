@@ -1,6 +1,7 @@
 package com.alien.plants.presentation.main.all_plants
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -14,7 +15,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.alien.plants.domain.model.PlantModel
 import com.alien.plants.presentation.main.MainViewModel
-import com.alien.plants.presentation.main.components.PlantItemView
+import com.alien.plants.presentation.main.common_components.PlantItemView
 import com.alien.plants.presentation.main.ui.theme.PlantsTheme
 
 @Composable
@@ -24,9 +25,10 @@ fun AllPlantScreen(mainViewModel: MainViewModel,context: Context) {
     }
     PlantsTheme {
         Surface {
-            PlantListScreen(plants = plantsList, context = context)
+            PlantListScreen(plants = plantsList, context = context, mainViewModel = mainViewModel)
         }
     }
+
 }
 
 
@@ -34,7 +36,8 @@ fun AllPlantScreen(mainViewModel: MainViewModel,context: Context) {
 fun PlantListScreen(
     plants: List<PlantModel>,
     modifier: Modifier = Modifier,
-    context: Context
+    context: Context,
+    mainViewModel: MainViewModel
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -45,7 +48,7 @@ fun PlantListScreen(
         )
     ) {
         items(plants){
-            PlantItemView(plantModel = it,context)
+            PlantItemView(plantModel = it ,context,mainViewModel)
         }
     }
 }
