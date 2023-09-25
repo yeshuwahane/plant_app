@@ -77,6 +77,9 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 
 
+    implementation ("androidx.compose.runtime:runtime-livedata:1.0.0-beta01")
+
+
     //coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 

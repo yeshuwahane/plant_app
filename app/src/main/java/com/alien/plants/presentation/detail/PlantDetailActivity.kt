@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.alien.plants.domain.model.PlantModel
 import com.alien.plants.presentation.detail.ui.theme.PlantsTheme
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,9 +23,15 @@ class PlantDetailActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        plantDetailViewModel.getPlantDetail()
-         val plant = plantDetailViewModel.plantDetailState.value
-        Log.d("alien","plant: ${plant.common_name}")
+
+        val plant = intent.getStringExtra("plant")
+
+        val plantModel = Gson().fromJson(plant,PlantModel::class.java)
+
+        if (plant != null) {
+            Log.d("alien",plant)
+        }
+
         setContent {
             PlantsTheme {
                 // A surface container using the 'background' color from the theme
@@ -32,7 +39,7 @@ class PlantDetailActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    DetailScreen(plantModel = plant)
+                    DetailScreen(plantModel = plantModel)
                 }
             }
         }

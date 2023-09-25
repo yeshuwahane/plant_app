@@ -27,6 +27,7 @@ import com.alien.plants.domain.model.PlantModel
 import com.alien.plants.presentation.detail.PlantDetailActivity
 import com.alien.plants.presentation.detail.PlantDetailViewModel
 import com.alien.plants.presentation.main.MainViewModel
+import com.google.gson.Gson
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -39,9 +40,11 @@ fun PlantItemView(plantModel: PlantModel, context: Context, mainViewModel: MainV
             .padding(10.dp)
             .combinedClickable(
                 onClick = {
-                    mainViewModel.forDetailActivity(plantModel)
+                    val plant = Gson().toJson(plantModel)
                     val intent = Intent(context, PlantDetailActivity::class.java)
+                    intent.putExtra("plant",plant)
                     context.startActivity(intent)
+
 
                 },
                 onLongClick = {

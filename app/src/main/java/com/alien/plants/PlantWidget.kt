@@ -2,22 +2,19 @@ package com.alien.plants
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.compose.material3.MaterialTheme
-import androidx.glance.text.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.glance.Button
-import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
-import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
-import androidx.glance.appwidget.action.ActionCallback
-import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.background
 import androidx.glance.currentState
@@ -25,9 +22,11 @@ import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.text.FontWeight
+import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import com.alien.plants.data.local.repository.LocalPlantRepositoryImpl
+import androidx.lifecycle.MutableLiveData
+import com.alien.plants.domain.model.PlantModel
 import com.alien.plants.domain.use_case.get_my_garden_plants.GetMyGardenPlantsUseCase
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,14 +35,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PlantWidget:GlanceAppWidget() {
-    val countKey = intPreferencesKey("count")
-    val plantsKey = stringPreferencesKey("plant")
     @Composable
     override fun Content() {
-        val count = currentState(key = countKey) ?: 0
-        val plantList = currentState(key = plantsKey)?: ""
-        Log.d("plant","widget: $plantList")
-
         Column(
             modifier = GlanceModifier
                 .fillMaxSize()
@@ -51,16 +44,9 @@ class PlantWidget:GlanceAppWidget() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            Text(text = count.toString(),
-                style = TextStyle(
-                    fontWeight = FontWeight.Medium,
-                    color = ColorProvider(MaterialTheme.colorScheme.onPrimary),
-                    fontSize = 26.sp
-                )
-
-
-            )
+            /*
+            TODO()
+             */
         }
     }
 
@@ -72,6 +58,8 @@ class PlantWidgetReceiver: GlanceAppWidgetReceiver() {
         get() = PlantWidget()
 
     val coroutineScope = MainScope()
+
+    val liveData:MutableLiveData<String> = MutableLiveData()
 
     @Inject
     lateinit var getMyGarden: GetMyGardenPlantsUseCase
@@ -85,11 +73,15 @@ class PlantWidgetReceiver: GlanceAppWidgetReceiver() {
         getMyPlants(context)
     }
 
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+        getMyPlants(context)
+    }
+
 
     private fun getMyPlants(context: Context){
         coroutineScope.launch {
             val myGarden = getMyGarden()
-            Log.d("alien","Plants: ${myGarden.toString()}")
             val string = Gson().toJson(myGarden.toString())
 
             val glanceId =
@@ -97,11 +89,14 @@ class PlantWidgetReceiver: GlanceAppWidgetReceiver() {
 
             if (glanceId != null) {
                 updateAppWidgetState(context,glanceId){prefs->
-                    prefs[PlantWidget().plantsKey] = string
+                    liveData.value = string
+                    Log.d("alien","Plants: $string")
+
                 }
             }
         }
     }
+
 
 }
 

@@ -15,7 +15,7 @@ fun Data.toModel(): PlantModel {
         genus_id = genus_id,
         id = id,
         image_url = image_url,
-        links = listOf<String>(links.genus,links.plant,links.self),
+        links = listOf(links.genus,links.plant,links.self),
         rank = rank
     )
 
