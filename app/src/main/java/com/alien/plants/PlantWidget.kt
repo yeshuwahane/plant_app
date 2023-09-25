@@ -4,58 +4,55 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.unit.sp
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceModifier
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.glance.appwidget.lazy.LazyColumn
+import androidx.glance.appwidget.lazy.items
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.fillMaxSize
-import androidx.glance.text.FontWeight
-import androidx.glance.text.Text
-import androidx.glance.text.TextStyle
-import androidx.glance.unit.ColorProvider
 import androidx.lifecycle.MutableLiveData
 import com.alien.plants.domain.model.PlantModel
 import com.alien.plants.domain.use_case.get_my_garden_plants.GetMyGardenPlantsUseCase
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PlantWidget:GlanceAppWidget() {
+object PlantWidget:GlanceAppWidget() {
+    val json = stringPreferencesKey("data")
     @Composable
     override fun Content() {
-        Column(
-            modifier = GlanceModifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            /*
-            TODO()
-             */
-        }
+        val data = currentState(key = json)
+
+        Log.d("alien","Plants: $data")
+
+//        LazyColumn(
+//            modifier = GlanceModifier
+//                .fillMaxSize()
+//                .background(MaterialTheme.colorScheme.background),
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//        ) {
+//            items()
+//        }
     }
+
 
 }
 
 @AndroidEntryPoint
 class PlantWidgetReceiver: GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget
-        get() = PlantWidget()
+        get() = PlantWidget
 
     val coroutineScope = MainScope()
 
@@ -89,10 +86,11 @@ class PlantWidgetReceiver: GlanceAppWidgetReceiver() {
 
             if (glanceId != null) {
                 updateAppWidgetState(context,glanceId){prefs->
-                    liveData.value = string
-                    Log.d("alien","Plants: $string")
+                    prefs[PlantWidget.json] = string
+                    Log.d("alien","model: $string")
 
                 }
+                PlantWidget.update(context, glanceId)
             }
         }
     }
