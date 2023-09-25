@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.androidx.foundation.android)
     implementation(platform(libs.compose.bom))
+    implementation(libs.firebase.inappmessaging.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -99,12 +100,18 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended-android:1.5.1")
 
     //room
-    //room
     implementation("androidx.room:room-runtime:2.5.2")
     annotationProcessor("androidx.room:room-compiler:2.5.2")
     kapt("androidx.room:room-compiler:2.5.2")
     implementation("androidx.room:room-ktx:2.5.2")
 
+    //Widget
+    implementation ("androidx.glance:glance:1.0.0-alpha05")
+    implementation ("androidx.glance:glance-appwidget:1.0.0-alpha05")
+
+
+    //Gson
+    implementation ("com.google.code.gson:gson:2.8.5")
 
 }
 kapt {
