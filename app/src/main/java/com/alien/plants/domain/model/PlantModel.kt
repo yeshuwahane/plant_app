@@ -18,5 +18,6 @@ data class PlantModel(
     val synonyms: List<String>? = emptyList(),
     val year: Int? =0,
     val isLoading:Boolean ?= false,
-    val error:String? = ""
+    val error:String? = "",
+    val dbId:Int? = null
 )

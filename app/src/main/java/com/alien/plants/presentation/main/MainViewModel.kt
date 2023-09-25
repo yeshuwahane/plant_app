@@ -26,8 +26,6 @@ class MainViewModel @Inject constructor(
     private val getAllPlantsUseCase: GetAllPlantsUseCase,
     val getMyGardenPlantsUseCase: GetMyGardenPlantsUseCase,
     val savePlantUseCase: SavePlantUseCase,
-    val addForActivityUseCase: AddForActivityUseCase,
-    val removePlantUseCase: RemovePlantUseCase
 ) : ViewModel() {
 
     val ediblePlantState: MutableState<List<PlantModel>> by lazy {
@@ -68,11 +66,6 @@ class MainViewModel @Inject constructor(
 
     }
 
-    fun removeFromMyGarden(plantModel: PlantModel){
-        viewModelScope.launch {
-            removePlantUseCase(plantModel)
-        }
-    }
 
     fun addToMyGarden(plantModel: PlantModel){
         viewModelScope.launch {
@@ -80,29 +73,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun forDetailActivity(plantModel: PlantModel){
-        val plantEntity = PlantEntity(
-            pId = null,
-            author = plantModel.author,
-            bibliography = plantModel.bibliography,
-            common_name = plantModel.common_name,
-            family = plantModel.family,
-            family_common_name = plantModel.family_common_name,
-            genus = plantModel.genus,
-            genus_id = plantModel.genus_id,
-            id = Constant.PLANT_ID_FOR_ACTIVITY,
-            image_url = plantModel.image_url,
-            rank = plantModel.rank,
-            scientific_name = plantModel.scientific_name,
-            slug = plantModel.slug,
-            status = plantModel.status,
-            year = plantModel.year
-        )
-        Log.d(javaClass.name,"Plant: ${plantEntity.common_name}")
-        viewModelScope.launch {
-            addForActivityUseCase(plantEntity)
-        }
-    }
+
 
 
 }

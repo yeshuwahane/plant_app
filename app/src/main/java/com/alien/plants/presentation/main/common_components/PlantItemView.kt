@@ -31,7 +31,7 @@ import com.google.gson.Gson
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PlantItemView(plantModel: PlantModel, context: Context, mainViewModel: MainViewModel) {
+fun PlantItemView(plantModel: PlantModel, context: Context, mainViewModel: MainViewModel,tabState:String) {
 
     Box(
         modifier = Modifier
@@ -41,8 +41,10 @@ fun PlantItemView(plantModel: PlantModel, context: Context, mainViewModel: MainV
             .combinedClickable(
                 onClick = {
                     val plant = Gson().toJson(plantModel)
-                    val intent = Intent(context, PlantDetailActivity::class.java)
-                    intent.putExtra("plant",plant)
+                    val intent = Intent(context, PlantDetailActivity::class.java).also {
+                        it.putExtra("plant",plant)
+                        it.putExtra("state",tabState)
+                    }
                     context.startActivity(intent)
 
 

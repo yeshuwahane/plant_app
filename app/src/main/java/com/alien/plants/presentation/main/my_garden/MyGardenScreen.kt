@@ -43,7 +43,7 @@ fun PlantListScreen(
 
     ) {
         items(myGarden){
-            PlantItemView(plantModel = it,context,mainViewModel)
+            PlantItemView(plantModel = it,context,mainViewModel,"local")
         }
     }
 

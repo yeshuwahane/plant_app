@@ -19,13 +19,14 @@ fun PlantEntity.toModel(): PlantModel {
         scientific_name = scientific_name.toString(),
         slug = slug.toString(),
         status = status.toString(),
-        year = year?.toInt()
+        year = year?.toInt(),
+        dbId = pId
     )
 }
 
 fun PlantModel.toEntity(): PlantEntity {
     return PlantEntity(
-        pId = null,
+        pId = dbId,
         author = author,
         bibliography = bibliography,
         common_name = common_name,

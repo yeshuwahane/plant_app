@@ -48,7 +48,7 @@ fun PlantListScreen(
         )
     ) {
         items(plants){
-            PlantItemView(plantModel = it ,context,mainViewModel)
+            PlantItemView(plantModel = it ,context,mainViewModel,"remote")
         }
     }
 }
